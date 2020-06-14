@@ -1,0 +1,167 @@
+[
+    {
+        "id": "953a418b.06a88",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4eaae3bd.58154c",
+        "type": "ui_form",
+        "z": "953a418b.06a88",
+        "name": "",
+        "label": "",
+        "group": "7043cb3e.15f844",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Enter a Query",
+                "value": "input",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "input": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "",
+        "x": 100,
+        "y": 280,
+        "wires": [
+            [
+                "5f0286b3.d309e8"
+            ]
+        ]
+    },
+    {
+        "id": "5f0286b3.d309e8",
+        "type": "function",
+        "z": "953a418b.06a88",
+        "name": "Input parser",
+        "func": "msg.payload=msg.payload.input;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 240,
+        "wires": [
+            [
+                "f4be8f82.8d893",
+                "db49373f.1b3058"
+            ]
+        ]
+    },
+    {
+        "id": "f4be8f82.8d893",
+        "type": "ui_text",
+        "z": "953a418b.06a88",
+        "group": "7043cb3e.15f844",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "You",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 430,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "db49373f.1b3058",
+        "type": "watson-conversation-v1",
+        "z": "953a418b.06a88",
+        "name": "",
+        "workspaceid": "89307445-1c99-4116-af00-954c4ca60d56",
+        "multiuser": false,
+        "context": true,
+        "empty-payload": false,
+        "service-endpoint": "https://api.eu-gb.assistant.watson.cloud.ibm.com/instances/cb606c55-735e-40c8-8393-6b173347a37b",
+        "timeout": "",
+        "optout-learning": false,
+        "x": 420,
+        "y": 160,
+        "wires": [
+            [
+                "90beefb2.c3e75",
+                "6f2983ab.6b375c"
+            ]
+        ]
+    },
+    {
+        "id": "90beefb2.c3e75",
+        "type": "debug",
+        "z": "953a418b.06a88",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 610,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "6f2983ab.6b375c",
+        "type": "function",
+        "z": "953a418b.06a88",
+        "name": "",
+        "func": "msg.payload.text=\"\";\nif(msg.payload.context.webhook_result_1){\n    for(var i in msg.payload.context.webhook_result_1.results){\n        msg.payload.text=msg.payload.text+\"\\n\"+msg.payload.context.webhook_result_1.results[i].text;\n    }\n    msg.payload=\"Chatbot: \"+msg.payload.text;\n}\nelse\nmsg.payload=\"Chatbot: \"+msg.payload.output.text[0];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 610,
+        "y": 220,
+        "wires": [
+            [
+                "e0c8cce8.2324a"
+            ]
+        ]
+    },
+    {
+        "id": "e0c8cce8.2324a",
+        "type": "ui_template",
+        "z": "953a418b.06a88",
+        "group": "7043cb3e.15f844",
+        "name": "",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "format": "<div style=\"height:400px\">\n    {{msg.payload}}\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 720,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7043cb3e.15f844",
+        "type": "ui_group",
+        "z": "",
+        "name": "Chatbot",
+        "tab": "ece7aeaa.7625e",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ece7aeaa.7625e",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Help Desk",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
